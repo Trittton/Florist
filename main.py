@@ -6,7 +6,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
 from databases import Database
 from config import DB_URL
-from db import database
+
 import os
 
 database = Database(DB_URL)
