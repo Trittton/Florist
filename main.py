@@ -4,12 +4,18 @@ from aiogram import types
 from aiogram import Dispatcher
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
+from databases import Database
+from config import DB_URL
 from db import database
 import os
+
+database = Database(DB_URL)
 
 TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
+
+
 
 HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME')
 
