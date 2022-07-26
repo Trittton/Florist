@@ -9,7 +9,7 @@ from databases import Database
 
 import os
 
-database = Database(DB_URL)
+database = os.getenv('DB_URL')
 
 TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(token=TOKEN)
