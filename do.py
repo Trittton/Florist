@@ -3,7 +3,7 @@
 
 def set_hook():
     import asyncio
-    from bot.settings import HEROKU_APP_NAME, WEBHOOK_URL, BOT_TOKEN
+    from settings import HEROKU_APP_NAME, WEBHOOK_URL, BOT_TOKEN
     from aiogram import Bot
     bot = Bot(token=BOT_TOKEN)
 
@@ -13,12 +13,15 @@ def set_hook():
             quit()
         await bot.set_webhook(WEBHOOK_URL)
         print(await bot.get_webhook_info())
-    
 
     asyncio.run(hook_set())
     bot.close()
 
 
 def start():
-    from bot.bot import main
+    from bot import main
     main()
+
+
+set_hook()
+start()
