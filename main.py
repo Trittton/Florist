@@ -5,7 +5,6 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
 from aiogram import Bot, types
 
-
 TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
@@ -35,7 +34,7 @@ async def echo(message: types.Message):
     await message.answer(message.text)
 
 
- if __name__ == '__main__':
+if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     start_webhook(
         dispatcher=dp,
