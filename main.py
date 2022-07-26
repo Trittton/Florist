@@ -1,21 +1,14 @@
 import logging
+import os
 from aiogram import Bot
-from aiogram import types
-from aiogram import Dispatcher
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
-from databases import Database
+from aiogram import Bot, types
 
-
-import os
-
-database = os.getenv('DB_URL')
 
 TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
-
-
 
 HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME')
 
@@ -26,38 +19,20 @@ WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 
 # webserver settings
 WEBAPP_HOST = '0.0.0.0'
-WEBAPP_PORT = int(os.getenv('PORT', default=8000))
-DB_URL = os.getenv('DATABASE_URL')
+WEBAPP_PORT = os.getenv('PORT', default=8000)
 
 
-async def on_startup(dispatcher: Dispatcher) -> None:
-    await database.connect()
+async def on_startup(dispatcher):
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
 async def on_shutdown(dispatcher):
-    await database.disconnect()
     await bot.delete_webhook()
-
-
-async def save(user_id, text):
-    await database.execute(f"INSERT INTO messages(telegram_id, text) "
-                           f"VALUES (:telegram_id, :text)", values={'telegram_id': user_id, 'text': text})
-
-
-async def read(user_id):
-    results = await database.fetch_all('SELECT text '
-                                       'FROM messages '
-                                       'WHERE telegram_id = :telegram_id ',
-                                       values={'telegram_id': user_id})
-    return [next(result.values()) for result in results]
 
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    await save(message.from_user.id, message.text)
-    messages = await read(message.from_user.id)
-    await message.answer(messages)
+    await message.answer(message.text)
 
 
 if __name__ == '__main__':
