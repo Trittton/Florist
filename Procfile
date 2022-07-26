@@ -1,1 +1,1 @@
-web: do.py
+web: python do.py
