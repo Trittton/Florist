@@ -30,9 +30,8 @@ async def read(user_id):
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    await save(message.from_user.id, message.text)
-    messages = await read(message.from_user.id)
-    await message.answer(messages)
+    logging.warning(f'Recieved a message from {message.from_user}')
+    await bot.send_message(message.chat.id, message.text)
 
 
 if __name__ == '__main__':
