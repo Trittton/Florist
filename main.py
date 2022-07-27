@@ -35,6 +35,10 @@ async def on_shutdown(dispatcher):
 async def with_puree(message: types.Message):
     await message.reply("Отличный выбор!")
 
+@dp.message_handler(Text(equals="Без пюрешки"))
+async def with_puree(message: types.Message):
+    await message.reply("Так невкусно!")
+
 
 @dp.message_handler(commands="start")
 async def cmd_start(message: types.Message):
