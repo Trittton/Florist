@@ -5,6 +5,9 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
 from aiogram import Bot, types
 
+from aiogram.types import ReplyKeyboardRemove, \
+    ReplyKeyboardMarkup, KeyboardButton, \
+    InlineKeyboardMarkup, InlineKeyboardButton
 
 TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(token=TOKEN)
@@ -29,6 +32,15 @@ async def on_startup(dispatcher):
 async def on_shutdown(dispatcher):
     await bot.delete_webhook()
 
+#keyboard
+button_hi = KeyboardButton('Привет! 👋')
+
+greet_kb = ReplyKeyboardMarkup()
+greet_kb.add(button_hi)
+
+@dp.message_handler(commands=['start'])
+async def process_start_command(message: types.Message):
+    await message.reply("Привет!", reply_markup=kb.greet_kb)
 
 @dp.message_handler()
 async def echo(message: types.Message):
