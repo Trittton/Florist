@@ -5,6 +5,8 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
 from aiogram import Bot, types
 
+from db import database
+
 from aiogram.dispatcher.filters import Text
 
 
@@ -30,6 +32,30 @@ async def on_startup(dispatcher):
 
 async def on_shutdown(dispatcher):
     await bot.delete_webhook()
+
+# bd
+
+async def save(user_id, text):
+    await database.execute(f"INSERT INTO messages(telegram_id, text) "
+                           f"VALUES (:telegram_id, :text)", values={'telegram_id': user_id, 'text': text})
+
+
+async def read(user_id):
+    messages = await database.fetch_all('SELECT text '
+                                        'FROM messages '
+                                        'WHERE telegram_id = :telegram_id ',
+                                        values={'telegram_id': user_id})
+    return messages
+
+
+@dp.message_handler()
+async def echo(message: types.Message):
+    await save(message.from_user.id, message.text)
+    messages = await read(message.from_user.id)
+    await message.answer(messages)
+
+
+# main keyboard
 
 @dp.message_handler(Text(equals="Добавить \U00002795\U0001FAB4"))
 async def with_puree(message: types.Message):
