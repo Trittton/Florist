@@ -21,17 +21,18 @@ async def save(user_id, text):
 
 
 async def read(user_id):
-    results = await database.fetch_all('SELECT text '
-                                       'FROM messages '
-                                       'WHERE telegram_id = :telegram_id ',
-                                       values={'telegram_id': user_id})
-    return [next(result.values()) for result in results]
+    messages = await database.fetch_all('SELECT text '
+                                        'FROM messages '
+                                        'WHERE telegram_id = :telegram_id ',
+                                        values={'telegram_id': user_id})
+    return messages
 
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    logging.warning(f'Recieved a message from {message.from_user}')
-    await bot.send_message(message.chat.id, message.text)
+    await save(message.from_user.id, message.text)
+    messages = await read(message.from_user.id)
+    await message.answer(messages)
 
 
 if __name__ == '__main__':
