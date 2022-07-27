@@ -27,10 +27,12 @@ WEBAPP_PORT = os.getenv('PORT', default=8000)
 
 
 async def on_startup(dispatcher):
+    await database.connect()
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
 async def on_shutdown(dispatcher):
+    await database.disconnect()
     await bot.delete_webhook()
 
 # bd
