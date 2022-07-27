@@ -5,6 +5,8 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
 from aiogram import Bot, types
 
+from aiogram.dispatcher.filters import Text
+
 
 TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(token=TOKEN)
@@ -28,6 +30,11 @@ async def on_startup(dispatcher):
 
 async def on_shutdown(dispatcher):
     await bot.delete_webhook()
+
+@dp.message_handler(Text(equals="С пюрешкой"))
+async def with_puree(message: types.Message):
+    await message.reply("Отличный выбор!")
+
 
 @dp.message_handler(commands="start")
 async def cmd_start(message: types.Message):
