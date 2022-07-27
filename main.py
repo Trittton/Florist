@@ -31,11 +31,9 @@ async def on_shutdown(dispatcher):
 
 @dp.message_handler(commands="start")
 async def cmd_start(message: types.Message):
-    keyboard = types.ReplyKeyboardMarkup()
-    button_1 = types.KeyboardButton(text="С пюрешкой")
-    keyboard.add(button_1)
-    button_2 = "Без пюрешки"
-    keyboard.add(button_2)
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["С пюрешкой", "Без пюрешки"]
+    keyboard.add(*buttons)
     await message.answer("Как подавать котлеты?", reply_markup=keyboard)
 
 @dp.message_handler()
