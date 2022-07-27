@@ -31,21 +31,28 @@ async def on_startup(dispatcher):
 async def on_shutdown(dispatcher):
     await bot.delete_webhook()
 
-@dp.message_handler(Text(equals="С пюрешкой"))
+@dp.message_handler(Text(equals="Добавить \U00002795\U0001FAB4"))
 async def with_puree(message: types.Message):
-    await message.reply("Отличный выбор!")
+    await message.reply("Выбери из списка")
 
-@dp.message_handler(Text(equals="Без пюрешки"))
+@dp.message_handler(Text(equals="Создать вручную \U0000270F\U0001FAB4"))
 async def with_puree(message: types.Message):
-    await message.reply("Так невкусно!")
+    await message.reply("Название/время")
 
+@dp.message_handler(Text(equals="Создать вручную \U0000270F\U0001FAB4"))
+async def with_puree(message: types.Message):
+    await message.reply("Выбери из списка")
+
+@dp.message_handler(Text(equals="Удалить \U0000274C\U0001FAB4"))
+async def with_puree(message: types.Message):
+    await message.reply(":(")
 
 @dp.message_handler(commands="start")
 async def cmd_start(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    buttons = ["С пюрешкой", "Без пюрешки"]
+    buttons = ["Добавить \U00002795\U0001FAB4", "Создать вручную \U0000270F\U0001FAB4", "Информация \U0001F4D6\U0001FAB4", "Удалить \U0000274C\U0001FAB4"]
     keyboard.add(*buttons)
-    await message.answer("Как подавать котлеты?", reply_markup=keyboard)
+    await message.answer("Привет, я помогу твоим цветочкам не зачахнуть. Добавь цветок и я буду напоминать тебе о том когда его нужно полить", reply_markup=keyboard)
 
 @dp.message_handler()
 async def echo(message: types.Message):
