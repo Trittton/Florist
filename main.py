@@ -50,8 +50,10 @@ async def with_puree(message: types.Message):
 @dp.message_handler(commands="start")
 async def cmd_start(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    buttons = ["Добавить \U00002795\U0001FAB4", "Создать вручную \U0000270F\U0001FAB4", "Информация \U0001F4D6\U0001FAB4", "Удалить \U0000274C\U0001FAB4"]
-    keyboard.add(*buttons(2))
+    buttons1 = ["Добавить \U00002795\U0001FAB4", "Создать вручную \U0000270F\U0001FAB4"]
+    buttons2 = ["Информация \U0001F4D6\U0001FAB4", "Удалить \U0000274C\U0001FAB4"]
+    keyboard.add(*buttons1)
+    keyboard.add(*buttons2)
     await message.answer("Привет, я помогу твоим цветочкам не зачахнуть. Добавь цветок и я буду напоминать тебе о том когда его нужно полить", reply_markup=keyboard)
 
 @dp.message_handler()
